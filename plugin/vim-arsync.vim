@@ -99,6 +99,11 @@ function! ARsync(direction)
                 let l:cmd = l:cmd + ['--exclude', '.*']
             endif
         endif
+        if has_key(l:conf_dict, 'update')
+            if l:conf_dict['update'] == 1
+                let l:cmd = l:cmd + ['-u']
+            endif
+        endif
         if has_key(l:conf_dict, 'remote_passwd')
             let l:cmd = ['sshpass', '-p', sshpass_passwd] + l:cmd
         endif
@@ -141,6 +146,7 @@ endif
 command! ARsyncUp call ARsync('up')
 command! ARsyncUpDelete call ARsync('upDelete')
 command! ARsyncDown call ARsync('down')
+command! ARsyncBidirection call ARsync('up') | call ARsync('down')
 command! ARshowConf call ShowConf()
 
 augroup vimarsync
